@@ -1,4 +1,4 @@
-# in  this file i documented the solution to all the question from this website
+# in  this file i documented the sql problems and solution  from this website below. The problem ranges from easy to medium to hard using two Databases ( Northwind and Hospital). 
 https://www.sql-practice.com/
 
 # Northwind Database
