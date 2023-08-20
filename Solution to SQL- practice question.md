@@ -146,9 +146,81 @@ SELECT CONCAT(first_name, ' ', last_name) AS full_name
 FROM patients;
 
 - Question 7:Show first name, last name, and the full province name of each patient.
-
 Example: 'Ontario' instead of 'ON'
 Solution
+SELECT p.first_name, p.last_name, pn.province_name
+FROM patients p
+JOIN province_names pn ON p.province_id = pn.province_id;
+
+- Question 8:Show how many patients have a birth_date with 2010 as the birth year.
+Solution
+
+SELECT COUNT(*)
+FROM patients
+WHERE YEAR(birth_date) = 2010;
+
+- Question 9:Show the first_name, last_name, and height of the patient with the greatest height.
+Solution
+SELECT first_name, last_name, height
+FROM patients
+ORDER BY height DESC
+LIMIT 1;
+
+- Question 10: Show all columns for patients who have one of the following patient_ids:
+1,45,534,879,1000
+Solution
+SELECT *
+FROM patients
+WHERE patient_id IN (1, 45, 534, 879, 1000);
+
+- Question 11:Show the total number of admissions
+-Solution
+SELECT COUNT(*) AS total_admissions
+FROM admissions;
+
+-Question 12: Show all the columns from admissions where the patient was admitted and discharged on the same day.
+Solution
+SELECT *
+FROM admissions
+WHERE DATE(admission_date) = DATE(discharge_date);
+
+- Question 13:Show the patient id and the total number of admissions for patient_id 579.
+Solution
+
+SELECT patient_id, COUNT(*) AS total_admissions
+FROM admissions
+WHERE patient_id = 579;
+
+- Question 14:Based on the cities that our patients live in, show unique cities that are in province_id 'NS'?
+Solution
+SELECT DISTINCT city
+FROM patients
+WHERE province_id = 'NS';
+
+- Question 15:Write a query to find the first_name, last name and birth date of patients who has height greater than 160 and weight greater than 70
+Solution
+SELECT first_name, last_name, birth_date
+FROM patients
+WHERE height > 160 AND weight > 70;
+
+- Question 16:Write a query to find list of patients first_name, last_name, and allergies from Hamilton where allergies are not null
+Solution
+SELECT first_name, last_name, allergies
+FROM patients
+WHERE city = 'Hamilton' AND allergies IS NOT NULL;
+
+- Question 17: Based on cities where our patient lives in, write a query to display the list of unique city starting with a vowel (a, e, i, o, u). Show the result order in ascending by city.
+Solution
+SELECT DISTINCT city
+FROM patients
+WHERE city LIKE 'A%' OR city LIKE 'E%' OR city LIKE 'I%' OR city LIKE 'O%' OR city LIKE 'U%'
+ORDER BY city ASC;
+
+- Question 18:Show unique birth years from patients and order them by ascending.
+Solution
+SELECT DISTINCT YEAR(birth_date) AS birth_year
+FROM patients
+ORDER BY birth_year ASC;
 
 # Medium
 # Hard
