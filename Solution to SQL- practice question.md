@@ -222,5 +222,242 @@ SELECT DISTINCT YEAR(birth_date) AS birth_year
 FROM patients
 ORDER BY birth_year ASC;
 
+- Question 19:Show unique first names from the patients table which only occurs once in the list.
+Solution
+SELECT first_name
+FROM patients
+GROUP BY first_name
+HAVING COUNT(first_name) = 1;
+
+- Question 20:Show patient_id and first_name from patients where their first_name start and ends with 's' and is at least 6 characters long.
+Solution
+SELECT patient_id, first_name
+FROM patients
+WHERE LENGTH(first_name) >= 6 AND
+      first_name LIKE 's%s';
+
+-Question 21:Show patient_id, first_name, last_name from patients whos diagnosis is 'Dementia'.
+Primary diagnosis is stored in the admissions table.
+Note there are two tables n the common column is patients id
+Solution
+SELECT p.patient_id, p.first_name, p.last_name
+FROM patients p
+JOIN admissions a ON p.patient_id = a.patient_id
+WHERE a.primary_diagnosis = 'Dementia';
+
+- Question 22:Show patient_id, first_name, last_name from patients whos diagnosis is 'Dementia'.
+Solution
+SELECT p.patient_id, p.first_name, p.last_name
+FROM patients p
+JOIN admissions a ON p.patient_id = a.patient_id
+WHERE a.diagnosis = 'Dementia';
+
+- Question 23:Display every patient's first_name.
+Order the list by the length of each name and then by alphbetically
+Solution
+SELECT first_name
+FROM patients
+ORDER BY LENGTH(first_name), first_name;
+
+- Question 24;Show the total amount of male patients and the total amount of female patients in the patients table.
+Display the two results in the same row
+Solution
+SELECT
+    SUM(CASE WHEN gender = 'M' THEN 1 ELSE 0 END) AS total_male_patients,
+    SUM(CASE WHEN gender = 'F' THEN 1 ELSE 0 END) AS total_female_patients
+FROM patients;
+
+- Question 25:Show first and last name, allergies from patients which have allergies to either 'Penicillin' or 'Morphine'. Show results ordered ascending by allergies then by first_name then by last_name.
+Solution
+SELECT first_name, last_name, allergies
+FROM patients
+WHERE allergies IN ('Penicillin', 'Morphine')
+ORDER BY allergies ASC, first_name ASC, last_name ASC;
+
+-Question 26:Show patient_id, diagnosis from admissions. Find patients admitted multiple times for the same diagnosis.
+solution
+SELECT patient_id, diagnosis
+FROM admissions
+GROUP BY patient_id, diagnosis
+HAVING COUNT(*) > 1;
+
+- Question 27:Show the city and the total number of patients in the city.
+Order from most to least patients and then by city name ascending
+
+Solution
+SELECT city, COUNT(*) AS total_patients
+FROM patients
+GROUP BY city
+ORDER BY total_patients DESC, city ASC;
+
+- Question 28:Show first name, last name and role of every person that is either patient or doctor.
+The roles are either "Patient" or "Doctor
+Solution
+SELECT first_name, last_name, 'Patient' AS role
+FROM patients
+UNION ALL
+SELECT first_name, last_name, 'Doctor' AS role
+FROM doctors;
+
+- Question 29:Show all of the patients grouped into weight groups.
+Show the total amount of patients in each weight group.
+Order the list by the weight group decending.
+Solution
+
+SELECT
+    FLOOR(weight / 10) * 10 AS weight_group,
+    COUNT(*) AS total_patients
+FROM patients
+GROUP BY weight_group
+ORDER BY weight_group DESC;
+
+- Question 30:Show patient_id, weight, height, isObese from the patients table.
+Display isObese as a boolean 0 or 1.
+Obese is defined as weight(kg)/(height(m)2) >= 30.
+weight is in units kg.
+height is in units cm.
+
+Solution
+SELECT
+    patient_id,
+    weight,
+    height,
+    CASE WHEN (weight / POWER(height / 100.0, 2)) >= 30 THEN 1 ELSE 0 END AS isObese
+FROM patients;
+
+- Question 31:Show patient_id, first_name, last_name, and attending doctor's specialty.
+Show only the patients who has a diagnosis as 'Epilepsy' and the doctor's first name is 'Lisa'
+
+Check patients, admissions, and doctors tables for required information.
+Solution
+SELECT
+    p.patient_id,
+    p.first_name,
+    p.last_name,
+    d.specialty AS attending_doctor_specialty
+FROM patients p
+JOIN admissions a ON p.patient_id = a.patient_id
+JOIN doctors d ON a.attending_doctor_id = d.doctor_id
+WHERE a.diagnosis = 'Epilepsy'
+  AND d.first_name = 'Lisa';
+
+- Question 32:All patients who have gone through admissions, can see their medical documents on our site. Those patients are given a temporary password after their first admission. Show the patient_id and temp_password.
+
+The password must be the following, in order:
+1. patient_id
+2. the numerical length of patient's last_name
+3. year of patient's birth_date
+Solution
+SELECT
+    patient_id,
+    CONCAT(patient_id, LENGTH(last_name), YEAR(birth_date)) AS temp_password
+FROM patients
+WHERE patient_id IN (SELECT DISTINCT patient_id FROM admissions);
+
+- Question 33:Each admission costs $50 for patients without insurance, and $10 for patients with insurance. All patients with an even patient_id have insurance.
+
+Give each patient a 'Yes' if they have insurance, and a 'No' if they don't have insurance. Add up the admission_total cost for each has_insurance group
+
+Solution
+SELECT
+    CASE WHEN patient_id % 2 = 0 THEN 'Yes' ELSE 'No' END AS has_insurance,
+    SUM(CASE WHEN patient_id % 2 = 0 THEN 10 ELSE 50 END) AS admission_total_cost
+FROM admissions
+GROUP BY has_insurance;
+
+- Question 34:Show the provinces that has more patients identified as 'M' than 'F'. Must only show full province_name
+
+Solution
+SELECT pn.province_name
+FROM province_names pn
+JOIN patients p ON pn.province_id = p.province_id
+GROUP BY pn.province_name
+HAVING SUM(CASE WHEN p.gender = 'M' THEN 1 ELSE 0 END) > SUM(CASE WHEN p.gender = 'F' THEN 1 ELSE 0 END);
+
+-question 35:We are looking for a specific patient. Pull all columns for the patient who matches the following criteria:
+- First_name contains an 'r' after the first two letters.
+- Identifies their gender as 'F'
+- Born in February, May, or December
+- Their weight would be between 60kg and 80kg
+- Their patient_id is an odd number
+- They are from the city 'Kingston
+Solution
+SELECT *
+FROM patients
+WHERE first_name LIKE '__r%'
+  AND gender = 'F'
+  AND MONTH(birth_date) IN (2, 5, 12)
+  AND weight BETWEEN 60 AND 80
+  AND patient_id % 2 = 1
+  AND city = 'Kingston';
+
+-Question 36:Show the percent of patients that have 'M' as their gender. Round the answer to the nearest hundreth number and in percent form.
+
+Solution
+SELECT ROUND((COUNT(CASE WHEN gender = 'M' THEN 1 ELSE NULL END) * 100.0 / COUNT(*)), 2) || '%' AS percentage_male
+FROM patients;
+
+- Question 37:For each day display the total amount of admissions on that day. Display the amount changed from the previous date.
+
+Solution
+SELECT
+    admission_date,
+    COUNT(*) AS total_admissions,
+    COUNT(*) - LAG(COUNT(*)) OVER (ORDER BY admission_date) AS change_from_previous
+FROM admissions
+GROUP BY admission_date
+ORDER BY admission_date;
+
+- Question 38:Sort the province names in ascending order in such a way that the province 'Ontario' is always on top.
+Solution
+SELECT province_name
+FROM province_names
+ORDER BY
+    CASE WHEN province_name = 'Ontario' THEN 0 ELSE 1 END,
+    province_name ASC;
+
+- Question 39:We need a breakdown for the total amount of admissions each doctor has started each year. Show the doctor_id, doctor_full_name, specialty, year, total_admissions for that year.
+Solution
+SELECT
+    d.doctor_id,
+    CONCAT(d.first_name, ' ', d.last_name) AS doctor_full_name,
+    d.specialty,
+    YEAR(a.admission_date) AS year,
+    COUNT(*) AS total_admissions
+FROM doctors d
+JOIN admissions a ON d.doctor_id = a.attending_doctor_id
+GROUP BY d.doctor_id, doctor_full_name, d.specialty, year
+ORDER BY d.doctor_id, year;
+
+- Question 40:Show all allergies ordered by popularity. Remove NULL values from query
+Solution
+SELECT allergies, COUNT(*) AS total_allergies
+FROM patients
+WHERE allergies IS NOT NULL
+GROUP BY allergies
+ORDER BY total_allergies DESC;
+
+- Question 41:Show all patient's first_name, last_name, and birth_date who were born in the 1970s decade. Sort the list starting from the earliest birth_date.
+Solution
+SELECT first_name, last_name, birth_date
+FROM patients
+WHERE birth_date BETWEEN '1970-01-01' AND '1979-12-31'
+ORDER BY birth_date;
+
+-  Question 42:We want to display each patient's full name in a single column. Their last_name in all upper letters must appear first, then first_name in all lower case letters. Separate the last_name and first_name with a comma. Order the list by the first_name in decending order
+EX: SMITH,jane
+Solution
+SELECT CONCAT(UPPER(last_name), ',', LOWER(first_name)) AS full_name
+FROM patients
+ORDER BY first_name DESC;
+
+- Question 43:Show the province_id(s), sum of height; where the total sum of its patient's height is greater than or equal to 7,000.
+Solution
+SELECT province_id, SUM(height) AS total_height
+FROM patients
+GROUP BY province_id
+HAVING SUM(height) >= 7000;
+
+- 
 # Medium
 # Hard
