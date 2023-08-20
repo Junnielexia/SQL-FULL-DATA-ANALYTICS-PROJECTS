@@ -107,7 +107,7 @@ GROUP BY e.employee_id, e.first_name, e.last_name
 ORDER BY e.last_name, e.first_name, num_orders DESC;
 
 # Hospital Database
-
+## Easy
 question 1:Show first name, last name, and gender of patients whose gender is 'M'
 Solution
 SELECT first_name, last_name, gender
@@ -132,6 +132,23 @@ Solution
 SELECT first_name, last_name
 FROM patients
 WHERE weight BETWEEN 100 AND 120;
+
+- Question 5: Update the patients table for the allergies column. If the patient's allergies is null then replace it with 'NKA'
+Solution
+
+UPDATE patients
+SET allergies = 'NKA'
+WHERE allergies IS NULL;
+
+- Question 6:Show first name and last name concatinated into one column to show their full name.
+Solution
+SELECT CONCAT(first_name, ' ', last_name) AS full_name
+FROM patients;
+
+- Question 7:Show first name, last name, and the full province name of each patient.
+
+Example: 'Ontario' instead of 'ON'
+Solution
 
 # Medium
 # Hard
