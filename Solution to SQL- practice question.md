@@ -458,6 +458,121 @@ FROM patients
 GROUP BY province_id
 HAVING SUM(height) >= 7000;
 
-- 
+- Question 44:Show the difference between the largest weight and smallest weight for patients with the last name 'Maroni'
+Solution
+SELECT MAX(weight) - MIN(weight) AS weight_difference
+FROM patients
+WHERE last_name = 'Maroni';
+
+- Question 45:Show all of the days of the month (1-31) and how many admission_dates occurred on that day. Sort by the day with most admissions to least admissions
+Solution
+SELECT
+    DAY(admission_date) AS day_of_month,
+    COUNT(*) AS total_admissions
+FROM admissions
+GROUP BY DAY(admission_date)
+ORDER BY total_admissions DESC;
+
+
+- Question 46:Show all columns for patient_id 542's most recent admission_date
+Solution
+SELECT *
+FROM admissions
+WHERE patient_id = 542
+ORDER BY admission_date DESC
+LIMIT 1;
+
+- Question 47:Show patient_id, attending_doctor_id, and diagnosis for admissions that match one of the two criteria:
+1. patient_id is an odd number and attending_doctor_id is either 1, 5, or 19.
+2. attending_doctor_id contains a 2 and the length of patient_id is 3 characters.
+Solution
+SELECT patient_id, attending_doctor_id, diagnosis
+FROM admissions
+WHERE 
+    (MOD(patient_id, 2) = 1 AND attending_doctor_id IN (1, 5, 19))
+    OR (attending_doctor_id LIKE '%2%' AND LENGTH(patient_id) = 3);
+
+- Question 48:Show first_name, last_name, and the total number of admissions attended for each doctor.
+Every admission has been attended by a doctor.
+Solution
+SELECT
+    d.first_name,
+    d.last_name,
+    COUNT(a.admission_id) AS total_admissions_attended
+FROM doctors d
+JOIN admissions a ON d.doctor_id = a.attending_doctor_id
+GROUP BY d.first_name, d.last_name
+ORDER BY total_admissions_attended DESC;
+
+- Question 49:For each doctor, display their id, full name, and the first and last admission date they attended.
+Solution
+SELECT
+    d.doctor_id,
+    CONCAT(d.first_name, ' ', d.last_name) AS doctor_full_name,
+    MIN(a.admission_date) AS first_admission_date,
+    MAX(a.admission_date) AS last_admission_date
+FROM doctors d
+JOIN admissions a ON d.doctor_id = a.attending_doctor_id
+GROUP BY d.doctor_id, doctor_full_name
+ORDER BY d.doctor_id;
+
+- Question 50: Display the total amount of patients for each province. Order by descending.
+Solution
+SELECT
+    pn.province_name,
+    COUNT(p.patient_id) AS total_patients
+FROM patients p
+JOIN province_names pn ON p.province_id = pn.province_id
+GROUP BY pn.province_name
+ORDER BY total_patients DESC;
+
+- Question 51:For every admission, display the patient's full name, their admission diagnosis, and their doctor's full name who diagnosed their problem
+Solution
+SELECT
+    CONCAT(p.first_name, ' ', p.last_name) AS patient_full_name,
+    a.diagnosis AS admission_diagnosis,
+    CONCAT(d.first_name, ' ', d.last_name) AS doctor_full_name
+FROM admissions a
+JOIN patients p ON a.patient_id = p.patient_id
+JOIN doctors d ON a.attending_doctor_id = d.doctor_id;
+
+- Question 52:display the number of duplicate patients based on their first_name and last_name
+Solution
+SELECT
+    first_name,
+    last_name,
+    COUNT(*) AS duplicate_count
+FROM patients
+GROUP BY first_name, last_name
+HAVING COUNT(*) > 1;
+
+- Question 53:Show patient_id, first_name, last_name from patients whose does not have any records in the admissions table. (Their patient_id does not exist in any admissions.patient_id rows.)
+Solution
+SELECT patient_id, first_name, last_name
+FROM patients
+WHERE patient_id NOT IN (SELECT DISTINCT patient_id FROM admissions);
+
+- Question 54:Display patient's full name,
+height in the units feet rounded to 1 decimal,
+weight in the unit pounds rounded to 0 decimals,
+birth_date,
+gender non abbreviated.
+
+Convert CM to feet by dividing by 30.48.
+Convert KG to pounds by multiplying by 2.205.
+
+Solution
+SELECT
+    CONCAT(first_name, ' ', last_name) AS full_name,
+    ROUND(height / 30.48, 1) AS height_feet,
+    ROUND(weight * 2.205, 0) AS weight_pounds,
+    birth_date,
+    CASE gender
+        WHEN 'M' THEN 'Male'
+        WHEN 'F' THEN 'Female'
+        ELSE 'Other'
+    END AS non_abbreviated_gender
+FROM patients;
+
 # Medium
 # Hard
