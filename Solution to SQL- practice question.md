@@ -289,6 +289,8 @@ WHERE city LIKE 'A%' OR city LIKE 'E%' OR city LIKE 'I%' OR city LIKE 'O%' OR ci
 ORDER BY city ASC;
 ```
 
+# Medium
+
 - **Question 18:Show unique birth years from patients and order them by ascending.**
 
 ### Solution
@@ -403,6 +405,7 @@ UNION ALL
 SELECT first_name, last_name, 'Doctor' AS role
 FROM doctors;
 ```
+# Hard
 
 - **Question 29:Show all of the patients grouped into weight groups.
 Show the total amount of patients in each weight group.
@@ -740,5 +743,4 @@ SELECT
     END AS non_abbreviated_gender
 FROM patients;
 ```
-# Medium
-# Hard
+***
