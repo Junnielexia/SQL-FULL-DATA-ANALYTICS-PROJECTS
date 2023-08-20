@@ -1,9 +1,29 @@
-# in  this file i documented the sql problems and solution  from the website below. the problems encompasses two Databases ( Northwind and Hospital). 
+# SQL Practice Portfolio
 
-👇🏾
-```
-https://www.sql-practice.com/
-```
+Welcome to my SQL Practice Portfolio! In this repository, I present a collection of SQL challenges and solutions sourced from the interactive platform at [https://www.sql-practice.com/](https://www.sql-practice.com/). By solving exercises across different difficulty levels and utilizing the Northwind and Hospital databases, I aim to showcase my SQL proficiency and problem-solving skills.
+
+## Databases
+
+- **Northwind Database**: A classic sample database that simulates a small food trading company. It contains tables related to customers, products, orders, and more.
+  
+- **Hospital Database**: A dataset representing a hospital management system, with tables covering patients, doctors, appointments, and medical departments.
+
+## Difficulty Levels
+
+Exercises are categorized into three difficulty levels:
+
+- **Easy**: These exercises cover fundamental SQL concepts and queries.
+  
+- **Medium**: These exercises involve more complex queries and data manipulation tasks.
+  
+- **Hard**: These exercises challenge advanced SQL skills, including subqueries, joins, and optimizations.
+
+
+## Directory Structure
+
+Each exercise is organized within its own directory following this structure:
+
+
 
 # Northwind Database
 ## Easy
