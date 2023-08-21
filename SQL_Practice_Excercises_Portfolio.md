@@ -143,18 +143,13 @@ Order by employee last_name, then by first_name, and then descending by number o
 
 ### Solution
 ```
-SELECT
-    e.first_name,
-    e.last_name,
-    COUNT(o.order_id) AS num_orders,
-    CASE
-        WHEN o.shipped_date <o.required_date THEN 'On Time'
-        ELSE 'Late'
-    END AS Shipped
+SELECT e.first_name, e.last_name, COUNT(*) AS num_orders,
+       CASE WHEN o.shipped_date < o.required_date THEN 'On Time' ELSE 'Late' END AS Shipped
 FROM employees e
 JOIN orders o ON e.employee_id = o.employee_id
-GROUP BY e.employee_id, e.first_name, e.last_name
+GROUP BY e.first_name, e.last_name, Shipped
 ORDER BY e.last_name, e.first_name, num_orders DESC;
+
 ```
 
 # Hospital Database
