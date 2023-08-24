@@ -158,19 +158,21 @@ LETs take alook at every age under 18
 SELECT count(*) FROM hr WHERE age < 18;
 ```
 
-![Screenshot (254)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/259cac12-77a3-4be5-9ca4-bb5e4af51042)
+![Screenshot (264)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/511e49dc-9b6a-455c-a97d-90d870757020)
 
 # Business Question
 
-1.  What is the gender breakdown of employees in the country?
+1.  What is the gender breakdown of employees in the company?
 
 ```
-  SELECT gender, count(*) AS count
+  SELECT gender, COUNT(*) AS count
 FROM hr
 WHERE age >= 18 AND termdate = '0000-00-00'
+GROUP BY gender;
+
 ```
 
-![Screenshot (255)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/a43659b0-f753-4db1-ad58-b45f27af03ee)
+![Screenshot (266)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/4c2ed170-2a48-481a-adb3-51c6697f740c)
 
 
 2. What is the race/Ethnicity breakdown of employees in the company?
@@ -183,10 +185,10 @@ GROUP BY race
 ORDER BY count(*) DESC;
  ```
 
-![Screenshot (257)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/e238fff9-b063-4c92-861a-d0416b382584)
+![Screenshot (267)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/be13f9eb-a22a-48cc-99b0-2baf89687e6b)
 
 
-3. What is the age distribution of remployees in the company
+3. What is the age distribution of employees in the company
 
 A. **OLD & YOUNG**
 
@@ -197,6 +199,7 @@ MAX(age) AS oldest
 FROM hr
 WHERE age >=18 AND termdate = '0000-00-00';
 ```
+![Screenshot (268)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/9cd4143f-7fb9-4bf8-a4d6-0351eb15cda6)
 
 B. **AGE GROUP**
 ```
@@ -215,7 +218,8 @@ WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY age_group
 ORDER BY age_group;
 ```
-![Screenshot (258)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/bd29e748-a17d-4a1f-b170-14845d9eb354)
+
+![Screenshot (269)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/dc3e3d18-1e44-4d2b-bd1e-c98506d3954d)
 
 C. - Gender Distribution within the different age group
 
@@ -236,7 +240,7 @@ GROUP BY age_group, gender
 ORDER BY age_group, gender;
 ```
 
-![Screenshot (259)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/d92ecc1e-c8a5-491b-af43-3bcb47acef8b)
+![Screenshot (270)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/de82cb09-ba31-4e53-8fd1-f2823d5a1539)
 
 
 4. How Many EMPLOYEE work from the Headquarters or Remote location;
@@ -248,7 +252,7 @@ WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY location;
 '''
 
-![Screenshot (260)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/e9a1303e-d090-4d13-8e31-ff1f4669ff46)
+![Screenshot (271)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/42729a07-4d85-4eac-8dc9-87e2ae3e47b4)
 
 -- 5. What is the average duration of employment for employees who have been terminated (ROUND UP)
 '''
@@ -258,9 +262,56 @@ FROM hr
 WHERE termdate <= CURDATE() AND termdate <> '0000-00-00'AND age >= 18;
 '''
 
-![image](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/66609e3f-8f93-40a8-b4a3-e28b2a4f9111)
+![Screenshot (272)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5273dda9-9b52-4f3a-b779-f6d87891c230)
+
 
 -- 6. How does the gender distribution vary across departments and ajob titles
+'''
+SELECT department, gender, count(*) AS count
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00'
+GROUP BY department, gender
+ORDER BY department, gender;
+'''
+
+![Screenshot (273)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/f03f8d52-7092-4a04-931f-08ff8c347f81)
 
 
+7. What is the distribution of job title across the company?
+
+'''
+SELECT jobtitle , count(*) AS count
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00'
+GROUP BY jobtitle
+ORDER BY jobtitle DESC;
+'''
+
+![Screenshot (274)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/9b807477-4dd2-4bfb-a6d1-a8249608cc68)
+
+8. Which Department has the highest turnover rate
+
+'''
+SELECT 
+    department,
+    COUNT(*) AS total_count,
+    SUM(CASE WHEN termdate != '0000-00-00' AND termdate <= CURDATE() THEN 1 ELSE 0 END) AS terminated_count,
+    IFNULL((SUM(CASE WHEN termdate IS NOT NULL AND termdate <= CURDATE() THEN 1 ELSE 0 END) / COUNT(*)), 0) AS termination_rate
+FROM hr
+WHERE age >= 18
+GROUP BY department
+ORDER BY termination_rate DESC;
+'''
+![Screenshot (275)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/bf48179c-4a8c-4bdb-83cc-15329993f876)
+
+
+9. WHAT Is the distribution of employees across  locations, cities and state
+'''
+SELECT location_state, count(*) AS count
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00'
+GROUP BY location_state
+ORDER BY count DESC;
+'''
+![Screenshot (276)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5fc082ad-4132-4889-be8b-5789cbff5161)
 
