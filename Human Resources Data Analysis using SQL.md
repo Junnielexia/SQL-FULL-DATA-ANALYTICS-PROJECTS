@@ -150,7 +150,85 @@ WHERE age >= 18 AND termdate = '0000-00-00'
 
 
 2. What is the race/Ethnicity breakdown of employees in the company?
-   
-- What is the age distribution of remployees in the company
-- 
+
+   ```
+   SELECT race, COUNT(*) AS count
+FROM hr
+WHERE age >= 18 AND termdate = '0000-00-00'
+GROUP BY race
+ORDER BY count(*) DESC;
+ ```
+![Screenshot (257)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/e238fff9-b063-4c92-861a-d0416b382584)
+
+
+3. What is the age distribution of remployees in the company
+
+A. **OLD & YOUNG**
+```
+SELECT
+MIN(age) AS youngest,
+MAX(age) AS oldest
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00';
+```
+B. **AGE GROUP**
+```
+SELECT
+ CASE
+  WHEN age >= 18 AND age <= 24 THEN '18-24'
+  WHEN age >= 25 AND age <= 34 THEN '25-34'
+  WHEN age >= 35 AND age <= 44 THEN '35-44'
+  WHEN age >= 45 AND age <= 54 THEN '35-54'
+  WHEN age >= 55 AND age <= 64 THEN '55-64'
+ ELSE '65+'
+END AS age_group,
+count(*) AS count
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00'
+GROUP BY age_group
+ORDER BY age_group;
+```
+![Screenshot (258)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/bd29e748-a17d-4a1f-b170-14845d9eb354)
+
+C. - Gender Distribution within the different age group
+```
+SELECT
+ CASE
+  WHEN age >= 18 AND age <= 24 THEN '18-24'
+  WHEN age >= 25 AND age <= 34 THEN '25-34'
+  WHEN age >= 35 AND age <= 44 THEN '35-44'
+  WHEN age >= 45 AND age <= 54 THEN '35-54'
+  WHEN age >= 55 AND age <= 64 THEN '55-64'
+ ELSE '65+'
+END AS age_group, gender,
+count(*) AS count
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00'
+GROUP BY age_group, gender
+ORDER BY age_group, gender;
+```
+![Screenshot (259)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/d92ecc1e-c8a5-491b-af43-3bcb47acef8b)
+
+
+4. How Many EMPLOYEE work from the Headquarters or Remote location;
+'''
+SELECT location, count(*) AS count
+FROM hr
+WHERE age >=18 AND termdate = '0000-00-00'
+GROUP BY location;
+'''
+![Screenshot (260)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/e9a1303e-d090-4d13-8e31-ff1f4669ff46)
+
+-- 5. What is the average duration of employment for employees who have been terminated (ROUND UP)
+'''
+SELECT
+round(avg(datediff(termdate, hire_date))/365,0) AS avg_duration_employment
+FROM hr
+WHERE termdate <= CURDATE() AND termdate <> '0000-00-00'AND age >= 18;
+'''
+![image](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/66609e3f-8f93-40a8-b4a3-e28b2a4f9111)
+
+-- 6. How does the gender distribution vary across departments and ajob titles
+
+
 
