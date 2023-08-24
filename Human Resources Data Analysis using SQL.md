@@ -64,3 +64,93 @@ MODIFY COLUMN birthdate DATE;
 ```
 
 ## HIRE Date
+
+```
+UPDATE hr
+SET hire_date = CASE
+WHEN  hire_date LIKE'%/%' THEN date_format(str_to_date(hire_date,'%m/%d/%Y'), '%Y-%m-%d')
+WHEN  hire_date LIKE'%-%' THEN date_format(str_to_date(hire_date,'%m-%d-%Y'), '%Y-%m-%d')
+ ELSE null
+END;
+SELECT hire_date From hr;
+```
+![Screenshot (248)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/2edc4302-191c-4b3d-9474-6f54ea78eb20)
+
+**TO Alter the data type  i used the code below 
+```
+ALTER TABLE hr
+MODIFY COLUMN hire_date DATE;
+```
+
+## Term Date Column
+The term date column has a lot of empty column and thae available date also has timestamps which we wont be needing for the analysis.
+
+![Screenshot (249)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/59356a89-8b51-44db-9c46-0de1d4d7b564)
+
+```
+UPDATE hr
+SET termdate = date(str_to_date(termdate,'%Y-%m-%d %H:%i:%sUTC'))
+WHERE true;
+SET sql_mode='ALLOW_INVALID_DATES';
+```
+**TO Alter the data type  i used the code below 
+```
+ALTER TABLE hr
+MODIFY COLUMN termdate DATE;
+SELECT termdate From hr;
+```
+![Screenshot (250)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/8cd5f96a-d0d0-4a48-b53d-8e88418b9e7e)
+
+VIEW ALL THE DATATYPE TO ENSURE THEY ALL NOW IN THERE CORRECT FORM
+
+```
+DESCRIBE hr;
+```
+![Screenshot (251)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/bc2cd8f3-cfc7-4485-a385-1579443dcb04)
+
+# Create an AGE Column
+
+```
+ALTER TABLE hr ADD COLUMN age INT;
+```
+**Update the column with The Calculated Age and visualize**
+```
+UPDATE hr
+SET age = timestampdiff(YEAR,birthdate,CURDATE());
+SELECT birthdate,age FROM hr;
+```
+![Screenshot (252)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/f9b68cc5-c7c4-4008-806d-f812bb05c7ca)
+
+**due to the presence of future date in the age column we have to re examine the column to fish out the invalid data.***
+
+SELECT MIN AND MAX AGE
+```
+SELECT
+MIN(age) AS youngest,
+MAX(age) AS oldest
+FROM hr;
+```
+![Screenshot (253)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5fc33cde-6b68-4dff-a80c-2745cdbbde80)
+
+LETs take alook at every age under 18
+```
+SELECT count(*) FROM hr WHERE age < 18;
+```
+![Screenshot (254)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/259cac12-77a3-4be5-9ca4-bb5e4af51042)
+
+# Business Question
+
+1.  What is the gender breakdown of employees in the country?
+```
+  SELECT gender, count(*) AS count
+FROM hr
+WHERE age >= 18 AND termdate = '0000-00-00'
+```
+![Screenshot (255)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/a43659b0-f753-4db1-ad58-b45f27af03ee)
+
+
+2. What is the race/Ethnicity breakdown of employees in the company?
+   
+- What is the age distribution of remployees in the company
+- 
+
