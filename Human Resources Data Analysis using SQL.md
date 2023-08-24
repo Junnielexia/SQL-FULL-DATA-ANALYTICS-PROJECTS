@@ -174,16 +174,15 @@ GROUP BY gender;
 
 ![Screenshot (266)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/4c2ed170-2a48-481a-adb3-51c6697f740c)
 
-
 2. What is the race/Ethnicity breakdown of employees in the company?
 
-   ```
-   SELECT race, COUNT(*) AS count
+```
+SELECT race, COUNT(*) AS count
 FROM hr
 WHERE age >= 18 AND termdate = '0000-00-00'
 GROUP BY race
 ORDER BY count(*) DESC;
- ```
+```
 
 ![Screenshot (267)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/be13f9eb-a22a-48cc-99b0-2baf89687e6b)
 
@@ -199,9 +198,11 @@ MAX(age) AS oldest
 FROM hr
 WHERE age >=18 AND termdate = '0000-00-00';
 ```
+
 ![Screenshot (268)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/9cd4143f-7fb9-4bf8-a4d6-0351eb15cda6)
 
 B. **AGE GROUP**
+
 ```
 SELECT
  CASE
@@ -254,7 +255,8 @@ GROUP BY location;
 
 ![Screenshot (271)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/42729a07-4d85-4eac-8dc9-87e2ae3e47b4)
 
--- 5. What is the average duration of employment for employees who have been terminated (ROUND UP)
+5. What is the average duration of employment for employees who have been terminated (ROUND UP)
+
 '''
 SELECT
 round(avg(datediff(termdate, hire_date))/365,0) AS avg_duration_employment
@@ -265,7 +267,8 @@ WHERE termdate <= CURDATE() AND termdate <> '0000-00-00'AND age >= 18;
 ![Screenshot (272)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5273dda9-9b52-4f3a-b779-f6d87891c230)
 
 
--- 6. How does the gender distribution vary across departments and ajob titles
+6. How does the gender distribution vary across departments and ajob titles
+
 '''
 SELECT department, gender, count(*) AS count
 FROM hr
@@ -302,10 +305,12 @@ WHERE age >= 18
 GROUP BY department
 ORDER BY termination_rate DESC;
 '''
+
 ![Screenshot (275)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/bf48179c-4a8c-4bdb-83cc-15329993f876)
 
 
 9. WHAT Is the distribution of employees across  locations, cities and state
+
 '''
 SELECT location_state, count(*) AS count
 FROM hr
@@ -313,5 +318,6 @@ WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY location_state
 ORDER BY count DESC;
 '''
+
 ![Screenshot (276)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5fc082ad-4132-4889-be8b-5789cbff5161)
 
