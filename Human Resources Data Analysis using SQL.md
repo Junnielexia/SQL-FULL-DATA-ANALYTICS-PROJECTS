@@ -255,7 +255,9 @@ GROUP BY location;
 
 ![Screenshot (271)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/42729a07-4d85-4eac-8dc9-87e2ae3e47b4)
 
+
 5. What is the average duration of employment for employees who have been terminated (ROUND UP)
+
 
 '''
 SELECT
