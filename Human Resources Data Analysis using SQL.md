@@ -321,3 +321,24 @@ ORDER BY count DESC;
 
 ![Screenshot (276)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5fc082ad-4132-4889-be8b-5789cbff5161)
 
+## Summary of Insights from HR Dataset Analysis
+
+- **Gender Distribution:** The dataset indicates a higher number of male employees compared to females.
+
+- **Ethnicity Distribution:** Among the racial groups, individuals identifying as White constitute the largest segment, while Native Hawaiian and American Indian categories have the lowest representation.
+
+- **Age Distribution:** The age range of employees spans from 20 to 57 years. To better analyze age demographics, five distinct age groups were created: 18-24, 25-34, 35-44, 45-54, and 55-64. The majority of employees fall within the 25-34 age bracket, followed by the 35-44 group. Conversely, the 55-64 age group represents the smallest portion.
+
+- **Work Location:** A substantial portion of employees work on-site at the headquarters, with remote workers forming a smaller segment.
+
+- **Length of Employment:** For terminated employees, the average employment tenure is approximately 7 years.
+
+- **Gender Distribution by Department:** While gender distribution across departments shows a relative balance, there is a general prevalence of male employees over female employees.
+
+- **Turnover Rates by Department:** The Marketing department exhibits the highest turnover rate, closely followed by the Training department. Conversely, the Research and Development, Support, and Legal departments have the lowest turnover rates.
+
+- **Geographical Origin:** A significant number of employees originate from the state of Ohio.
+
+- **Employee Changes:** The dataset reveals a consistent increase in the net employee count over the years.
+
+- **Tenure by Department:** On average, employees have a tenure of approximately 8 years within their respective departments. Notably, the Legal and Auditing departments have the longest average tenure, while the Services, Sales, and Marketing departments display the shortest average tenures.
