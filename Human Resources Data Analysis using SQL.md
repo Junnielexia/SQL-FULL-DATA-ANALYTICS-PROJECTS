@@ -246,12 +246,12 @@ ORDER BY age_group, gender;
 
 4. How Many EMPLOYEE work from the Headquarters or Remote location;
 
-'''
+```
 SELECT location, count(*) AS count
 FROM hr
 WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY location;
-'''
+```
 
 ![Screenshot (271)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/42729a07-4d85-4eac-8dc9-87e2ae3e47b4)
 
@@ -259,44 +259,44 @@ GROUP BY location;
 5. What is the average duration of employment for employees who have been terminated (ROUND UP)
 
 
-'''
+```
 SELECT
 round(avg(datediff(termdate, hire_date))/365,0) AS avg_duration_employment
 FROM hr
 WHERE termdate <= CURDATE() AND termdate <> '0000-00-00'AND age >= 18;
-'''
+```
 
 ![Screenshot (272)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5273dda9-9b52-4f3a-b779-f6d87891c230)
 
 
 6. How does the gender distribution vary across departments and ajob titles
 
-'''
+```
 SELECT department, gender, count(*) AS count
 FROM hr
 WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY department, gender
 ORDER BY department, gender;
-'''
+```
 
 ![Screenshot (273)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/f03f8d52-7092-4a04-931f-08ff8c347f81)
 
 
 7. What is the distribution of job title across the company?
 
-'''
+```
 SELECT jobtitle , count(*) AS count
 FROM hr
 WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY jobtitle
 ORDER BY jobtitle DESC;
-'''
+```
 
 ![Screenshot (274)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/9b807477-4dd2-4bfb-a6d1-a8249608cc68)
 
 8. Which Department has the highest turnover rate
 
-'''
+```
 SELECT 
     department,
     COUNT(*) AS total_count,
@@ -306,22 +306,32 @@ FROM hr
 WHERE age >= 18
 GROUP BY department
 ORDER BY termination_rate DESC;
-'''
+```
 
 ![Screenshot (275)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/bf48179c-4a8c-4bdb-83cc-15329993f876)
 
 
 9. WHAT Is the distribution of employees across  locations, cities and state
 
-'''
+```
 SELECT location_state, count(*) AS count
 FROM hr
 WHERE age >=18 AND termdate = '0000-00-00'
 GROUP BY location_state
 ORDER BY count DESC;
-'''
+```
 
 ![Screenshot (276)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/5fc082ad-4132-4889-be8b-5789cbff5161)
+
+10. what is the tenure distribution for each department
+
+```
+SELECT department, round(avg(datediff(termdate, hire_date)/365),0) AS avg_tenure
+FROM hr
+WHERE termdate <= curdate() AND termdate <> '0000-00-00' AND age >= 18
+GROUP BY department;
+```
+![Screenshot (278)](https://github.com/Junnielexia/SQL-FULL-DATA-ANALYTICS-PROJECTS/assets/95970546/8a251df1-678f-4ba3-9af9-c2c20e1285bd)
 
 ## Summary of Insights from HR Dataset Analysis
 
